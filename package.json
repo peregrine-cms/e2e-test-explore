@@ -1,0 +1,17 @@
+{
+  "name": "peregrine-test",
+  "version": "0.0.1",
+  "description": "a codeceptjs based test framework for peregrine-cms",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "headwire.com, Inc",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "codeceptjs": "^2.0.8",
+    "codeceptjs-cmdhelper": "^2.2.0",
+    "ffmpeg-static": "^2.4.0",
+    "puppeteer": "^1.14.0"
+  }
+}
