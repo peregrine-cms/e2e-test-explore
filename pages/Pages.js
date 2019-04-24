@@ -1,4 +1,5 @@
 const I = actor();
+const robot = require('robotjs');
 
 module.exports = {
 
@@ -11,7 +12,7 @@ module.exports = {
     I.click('Next');
     I.fillField('#site-name',name);
     I.click('Next');
-    I.clickLink('Finish');
+    I.click('Finish');
   },
 
   iDeleteASite(name) {
@@ -23,15 +24,34 @@ module.exports = {
     I.sendDeleteRequest('/etc/felibs/'+name);
   },
 
-  iNavigateTo(name, next) {
+  iNavigateTo(name, text) {
     I.see(name);
-    I.click(name);
-    I.see(next);
+    I.click(locate('a').withAttr( { title: 'select \'' + name + '\''} ));
+    I.see(text);
+  },
+
+  iEditPage(name, text) {
+    I.say("test 1");
+    I.see(name);
+    I.click(locate('a').withAttr( { title: 'edit \'' + name + '\''} ));
+    I.say("test 2");
+    I.waitForText("editor", 3);
   },
 
   iClickActionForItem(action, item) {
-    I.say('this shod now click '+action+' for the item '+item);
+    I.say('this should now click ' + action + ' for the item '+item);
     pause();
+  },
+
+  reorderItems(srcAssetName, targetName) {
+    I.seeInTitle('pages');
+
+    I.robotDragAndDropElements(locate('span.draggable').inside(locate('li').withText(srcAssetName)), locate('li').withText(targetName))
+    I.wait(1);
+
+    I.seeInTitle('pages');
+
+    // test that ordering is correct
   }
 
 }

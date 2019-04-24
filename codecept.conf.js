@@ -10,10 +10,10 @@ exports.config = {
       waitForAction: 1000,
       waitForNavigation: 'networkidle2',
       chrome: {
-        args: ['--start-fullscreen'],
+        // args: ['--start-fullscreen'],
         defaultViewport: {
-          width: 1920,
-          height: 1080
+          width: 1100,
+          height: 600
         }
       }
     },
@@ -25,7 +25,10 @@ exports.config = {
       options: {
         showOutput: true
       }
-    }
+    },
+    RobotHelper: {
+        require: './helpers/robot_helper.js',
+    },
   },
   include: {
     loginPage: './pages/Login.js',
@@ -33,6 +36,7 @@ exports.config = {
     welcomePage: './pages/Welcome.js',
     pagesPage: './pages/Pages.js',
     recorder: './libs/recorder.js',
+    pageEditor: './Pages/PageEditor.js',
     I: './libs/steps_file.js'
   },
   mocha: {},
@@ -57,24 +61,24 @@ exports.config = {
       users: {
         admin: {
           login: (I) => {
-              I.say('>> boylerplate: login');
+              I.say('>> boilerplate: login');
               I.amOnPage('/system/sling/form/login');
               I.fillField('j_username', 'admin');
               I.fillField('j_password', 'admin');
               I.click('Login');
-              I.see('Welcome');
-              I.say('>> /boylerplate');
+              I.see('welcome');
+              I.say('>> /boilerplate');
           },
           check: (I) => {
-              I.say('>> boylerplate: check if logged in');
+              I.say('>> boilerplate: check if logged in');
               I.amOnPage('/perapi/admin/access.json');
               I.see('"admin"');
-              I.say('>> /boylerplate');
+              I.say('>> /boilerplate');
             }
         }
       }
     }
   },
-  tests: './tests/*_test.js',
+  tests: './tests/integra*.js',
   name: 'peregrine-test'
 }
