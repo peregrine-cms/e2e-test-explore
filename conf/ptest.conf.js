@@ -2,6 +2,6 @@
 
 exports.config = {
     version: '1-0-0',                   // what version of peregriine do we test against
-    show: true,                         // show the browser?
+    show: false,                         // show the browser?
     url: 'http://localhost:8080'        // where is the server located?
 }

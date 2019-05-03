@@ -1,5 +1,5 @@
 
-Feature('Demo1');
+Feature('Create site');
 
 Before((login, pagesPage) => {
     login('admin');
@@ -62,4 +62,5 @@ Scenario('Page editor flow test', (I, recorder, welcomePage, pagesPage, pageEdit
     // I.stopRecording();
    //   pause()
 });
+
 

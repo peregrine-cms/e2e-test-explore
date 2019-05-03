@@ -1,4 +1,5 @@
-const ptest = require('./ptest.conf.js').config;
+const ptest = require('./conf/ptest.conf.js').config;
+const siteIncludes = require('./conf/site.conf.js').siteIncludes;
 
 exports.config = {
   output: './output',
@@ -29,16 +30,11 @@ exports.config = {
     RobotHelper: {
         require: './helpers/robot_helper.js',
     },
+    EventHelper: {
+        require: './helpers/event_helper.js',
+    }
   },
-  include: {
-    loginPage: './pages/Login.js',
-    homePage: './pages/Home.js',
-    welcomePage: './pages/Welcome.js',
-    pagesPage: './pages/Pages.js',
-    recorder: './libs/recorder.js',
-    pageEditor: './Pages/PageEditor.js',
-    I: './libs/steps_file.js'
-  },
+  include: siteIncludes,
   mocha: {},
   bootstrap: null,
   teardown: null,
@@ -79,6 +75,6 @@ exports.config = {
       }
     }
   },
-  tests: './tests/integra*.js',
+  tests: './tests/admin/templates/templ*.js',
   name: 'peregrine-test'
 }

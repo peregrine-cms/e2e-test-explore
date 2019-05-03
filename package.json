@@ -9,7 +9,7 @@
   "author": "headwire.com, Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "codeceptjs": "^2.0.8",
+    "codeceptjs": "^2.1.0",
     "codeceptjs-cmdhelper": "^2.2.0",
     "ffmpeg-static": "^2.4.0",
     "nightmare": "^3.0.1",

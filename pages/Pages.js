@@ -1,5 +1,5 @@
 const I = actor();
-const robot = require('robotjs');
+const common = require('../libs/common');
 
 module.exports = {
 
@@ -52,6 +52,10 @@ module.exports = {
     I.seeInTitle('pages');
 
     // test that ordering is correct
+  },
+
+  iNavigateHome() {
+    common.returnToHomeMenu();
   }
 
 }
