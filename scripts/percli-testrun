@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 
 const args = require('commander');
-const fs = require('fs-extra');
-const path = require('path');
 const Codeceptjs = require( 'codeceptjs' ).codecept;
 const { spawn, spawnSync } = require('child_process');
-const codeceptConfig = require('../codecept.conf.js');
 
 args.version('1.0.0')
     .option("-p, --pattern [pattern]", 'run tests that match pattern')
@@ -34,7 +31,6 @@ if(args.pattern) {
     }
     testPattern += (features.length > 1) ? "}" : "";
 
-    console.log(testPattern);
     Object.assign(overrides, {"tests": testPattern});
 }
 
