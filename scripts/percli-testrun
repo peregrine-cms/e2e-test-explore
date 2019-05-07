@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+
+const args = require('commander');
+const fs = require('fs-extra');
+const path = require('path');
+const Codeceptjs = require( 'codeceptjs' ).codecept;
+const { spawn, spawnSync } = require('child_process');
+const codeceptConfig = require('../codecept.conf.js');
+
+args.version('1.0.0')
+    .option("-p, --pattern [pattern]", 'run tests that match pattern')
+    .option('-t, --tag [tags]', 'run tests that match a specific tag or tags (comma-sepatated)')
+    .option('-f, --feature [features]', 'run test for specific feature or features (comma-sepatated)')
+    .option('-s, --showbrowser', 'run tests with browser', false)
+    .option('-l, --loglevel [loglevel]', 'specify output level: none, steps, debug, or verbose (default: steps)')
+    .parse(process.argv);
+
+let overrides = {};
+
+if(args.showbrowser) {
+    Object.assign(overrides, { "helpers": {"Puppeteer": {"show": "true"}}});
+}
+
+if(args.pattern) {
+    Object.assign(overrides, {"tests": args.pattern});
+} else if (args.feature) {
+    let features = args.feature.split(",");
+    let testPattern = features.length > 1 ? "{" : "";
+    for(let i=0; i<features.length; i++) {
+        if(i>0) {
+            testPattern += ",";
+        }
+        testPattern += "./tests/admin/" + features[i] + "/*.js";
+    }
+    testPattern += (features.length > 1) ? "}" : "";
+
+    console.log(testPattern);
+    Object.assign(overrides, {"tests": testPattern});
+}
+
+// Later on we'll add run-multiple ability
+let runMode = "run";
+let additionalArgs = [];
+
+// This can get complicated if we want, but for now it will just be a "OR" tags
+if(args.tag) {
+    let tags = args.tag.split(",");
+    let grepPattern = "";
+
+    for(let i=0; i<tags.length; i++) {
+        if(i>0) {
+            grepPattern += "|";
+        }
+        grepPattern += String.raw`\@` + tags[i];
+    }
+    additionalArgs.push("--grep", grepPattern);
+}
+
+if((args.loglevel) && (['steps', 'debug', 'verbose'].indexOf(args.loglevel) > 0)) {
+    additionalArgs.push("--" + args.loglevel);
+} else if(args.loglevel != "none") {
+    additionalArgs.push("--steps");
+}
+
+// Some parameters get set in the config override, while others are command-line
+let spawnArgs = ['codeceptjs', runMode, '-o', JSON.stringify(overrides)].concat(additionalArgs);
+
+console.log("Spawning: npx " + spawnArgs.join(" "));
+
+spawnSync('npx', spawnArgs, {
+    stdio: [process.stdin, process.stdout, process.stderr]
+});
+
