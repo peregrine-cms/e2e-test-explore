@@ -1,6 +1,6 @@
 const process = require('process');
-
 const ffmpeg = require('ffmpeg-static');
+
 const { spawn } = require('child_process');
 const I = actor();
 
@@ -18,8 +18,6 @@ async function startRecording() {
 async function stopRecording() {
     recorder.kill();
 }
-
-// in this file you can append custom step methods to 'I' object
 
 const cmd = ffmpeg.path+' -y -f gdigrab -framerate 30 -show_region 1 -i desktop output/recording.avi';
 

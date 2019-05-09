@@ -1,5 +1,5 @@
 const I = actor();
-const common = require('../libs/common');
+const Ii = require('../libs/common');
 
 module.exports = {
 
@@ -55,7 +55,7 @@ module.exports = {
   },
 
   iNavigateHome() {
-    common.returnToHomeMenu();
+    Ii.returnToHomeMenu();
   }
 
 }

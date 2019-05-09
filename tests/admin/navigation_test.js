@@ -47,4 +47,4 @@ Scenario('Navigation page test', (I, recorder, welcomePage, assetsPage, homePage
 
     homePage.iAmOnThePage();
 
-});
+}).tag("navigation");

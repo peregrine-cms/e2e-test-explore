@@ -9,6 +9,7 @@ args.version('1.0.0')
     .option('-t, --tag [tags]', 'run tests that match a specific tag or tags (comma-sepatated)')
     .option('-f, --feature [features]', 'run test for specific feature or features (comma-sepatated)')
     .option('-s, --showbrowser', 'run tests with browser', false)
+    .option('-i, --interactiveshell', 'run codeceptjs in shell mode', false)
     .option('-l, --loglevel [loglevel]', 'specify output level: none, steps, debug, or verbose (default: steps)')
     .parse(process.argv);
 
@@ -35,7 +36,13 @@ if(args.pattern) {
 }
 
 // Later on we'll add run-multiple ability
-let runMode = "run";
+let runMode;
+if(args.interactiveshell) {
+    runMode = "shell";
+} else {
+    runMode = "run";
+}
+
 let additionalArgs = [];
 
 // This can get complicated if we want, but for now it will just be a "OR" tags
@@ -59,8 +66,12 @@ if((args.loglevel) && (['steps', 'debug', 'verbose'].indexOf(args.loglevel) > 0)
 }
 
 // Some parameters get set in the config override, while others are command-line
-let spawnArgs = ['codeceptjs', runMode, '-o', JSON.stringify(overrides)].concat(additionalArgs);
-
+let spawnArgs;
+if(runMode == "shell") {
+    spawnArgs = ['codeceptjs', runMode];
+} else {
+    spawnArgs = ['codeceptjs', runMode, '-o', JSON.stringify(overrides)].concat(additionalArgs);
+}
 console.log("Spawning: npx " + spawnArgs.join(" "));
 
 spawnSync('npx', spawnArgs, {

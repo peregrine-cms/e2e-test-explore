@@ -1,19 +1,28 @@
 
 Feature('Create site');
 
+let testSites = ['test1', 'test-2', 'test 3'];
+let sites = new DataTable(['siteName']);
+testSites.forEach((site) => {
+    sites.add([site]);
+});
+
+
 Before((login, pagesPage) => {
     login('admin');
-    pagesPage.iDeleteASite('test1');
+
+    testSites.forEach((site) => {
+        pagesPage.iDeleteASite(site);
+    });
 });
 
 After(pagesPage => {
-
-    pagesPage.iDeleteASite('test1');
-
+    testSites.forEach((site) => {
+        pagesPage.iDeleteASite(site);
+    });
 });
 
-
-Scenario('Reorder page elements -- mouse move proof of concept', (I, recorder, welcomePage, pagesPage, pageEditor) => {
+Scenario('Reorder page elements -- mouse move proof of concept @pagetest1', (I, recorder, welcomePage, pagesPage, pageEditor) => {
 
     I.say('Proof-of-concept test: CodeceptJS vs PeregrineCMS');
 
@@ -28,7 +37,7 @@ Scenario('Reorder page elements -- mouse move proof of concept', (I, recorder, w
 });
 
 
-Scenario('Page editor flow test', (I, recorder, welcomePage, pagesPage, pageEditor) => {
+Data(sites).Scenario('Page editor flow test', (I, current, recorder, welcomePage, pagesPage, pageEditor) => {
 
     I.say('Proof-of-concept test: CodeceptJS vs PeregrineCMS');
 
@@ -41,17 +50,17 @@ Scenario('Page editor flow test', (I, recorder, welcomePage, pagesPage, pageEdit
     welcomePage.navigateTo('sites and pages', pagesPage);
 
 
-    pagesPage.iCreateANewSite('test1');
+    pagesPage.iCreateANewSite(current.siteName);
 
 
-    pagesPage.iNavigateTo('test1', 'Sample Sites');
+    pagesPage.iNavigateTo(current.siteName, 'Sample Sites');
 
-    pagesPage.iEditPage('Sample Sites', "editor!");
+    //pagesPage.iEditPage('Sample Sites', "editor!");
 
 
     // pause();
 
-    pageEditor.iAddComponentAt('Accordion', '/jcr:content');
+    //pageEditor.iAddComponentAt('Accordion', '/jcr:content');
 
 
     // editPage.iAddComponentAt('Article Text Block', '/jcr:content');
@@ -61,6 +70,6 @@ Scenario('Page editor flow test', (I, recorder, welcomePage, pagesPage, pageEdit
     // editPage.iSaveComponentEdit();
     // I.stopRecording();
    //   pause()
-});
+}).tag("@pages").tag("@pageTest1");
 
 
