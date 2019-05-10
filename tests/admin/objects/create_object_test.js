@@ -18,12 +18,15 @@ testObjects.forEach((objectParams) => {
 
 Before((login, objectsPage) => {
     login('admin');
+});
+
+BeforeSuite(objectsPage => {
     testObjects.forEach((testObject) => {
         objectsPage.iDeleteAnObject(testObject[0]);
     });
 });
 
-After(objectsPage => {
+AfterSuite(objectsPage => {
     testObjects.forEach((testObject) => {
         objectsPage.iDeleteAnObject(testObject[0]);
     });
@@ -45,7 +48,6 @@ Data(objects).Scenario('Create object types', (I, current, recorder, welcomePage
     I.see(current.objectName);
 
 }).tag("@objects").tag("@objectTest1");
-
 
 
 Scenario('t2', (I) => {

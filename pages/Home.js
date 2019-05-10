@@ -4,7 +4,8 @@ module.exports = {
 
 
     iAmOnThePage() {
-        I.amOnPage('/content/admin.html')
+        I.amOnPage('/content/admin.html');
+
         this.validatePage();
     },
 
