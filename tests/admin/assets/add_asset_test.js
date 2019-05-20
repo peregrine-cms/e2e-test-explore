@@ -32,7 +32,7 @@ Before((login, assetsPage) => {
 
 Data(uploadAssets).Scenario('Upload assets', (I, current, recorder, welcomePage, homePage, assetsPage) => {
 
-    I.say('Proof-of-concept test: CodeceptJS vs PeregrineCMS');
+    I.say('Testing upload of asset: ' + current.filename);
 
     // I.startRecording();
     welcomePage.iAmOnThePage();
@@ -46,8 +46,6 @@ Data(uploadAssets).Scenario('Upload assets', (I, current, recorder, welcomePage,
     I.wait(1);
 
     I.see(current.filename);
-
-    ///pause();
 
     assetsPage.iValidateAssetText(current.filename, current.verifyText);
 

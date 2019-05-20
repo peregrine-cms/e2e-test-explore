@@ -1,10 +1,12 @@
 const I = actor();
 const config = require('codeceptjs').config;
+const headlessMode = require('codeceptjs').config.get("headlessMode");
+//const { headlessMode } = inject();
 
 module.exports = {
 
     iAddComponent(componentType, targetLocator) {
-        I.say('Adding ' + componentType + ' to Page');
+        I.say('Adding ' + componentType + ' to template');
 
         I.seeTitleEquals('editor');
         I.wait(0.5);
@@ -19,20 +21,16 @@ module.exports = {
         if(!targetLocator) {
             targetLocator = locate('div').withAttr({id: "editable"}).as("Page start")
         }
-
         if(!config.get('headlessMode')) {
-            I.say("dragging and dropping" + sourceLocator);
+            I.say("dragging and dropping " + sourceLocator);
             I.robotDragAndDropElements(sourceLocator, targetLocator);
         }
 
         I.wait(0.5);
     },
 
-    // Because of the iFrame, we can't just use I.see
-    iSeeTextInEditor(textToSee) {
-        within({frame: "#editview"}, () => {
-           I.see(textToSee);
-        });
+    iReturnToTemplatesMenu() {
+        I.click("templates");
     },
 
     iEditActiveComponentTitle(newTitle) {
@@ -44,7 +42,7 @@ module.exports = {
     },
 
     iClickActiveComponentAccept() {
-        I.click(locate('button').withAttr({title: "save"}).inside(locate('div').withAttr({class: "editor-panel-buttons"})).as("Save component"));
+          I.click(locate('button').withAttr({title: "save"}).inside(locate('div').withAttr({class: "editor-panel-buttons"})).as("Save component"));
     },
 
     iClickComponent(componentText) {

@@ -17,6 +17,9 @@ let overrides = {};
 
 if(args.showbrowser) {
     Object.assign(overrides, { "helpers": {"Puppeteer": {"show": "true"}}});
+    Object.assign(overrides, { "headlessMode": false});
+} else {
+    Object.assign(overrides, { "headlessMode": "true"});
 }
 
 if(args.pattern) {

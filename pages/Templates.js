@@ -9,7 +9,7 @@ module.exports = {
 
   // Does not work top-level!
   iCreateANewTemplate(name) {
-    I.click(locate('a').withAttr( { title: 'add template'} ));
+    I.click(locate('a').withAttr( { title: 'add template'} ).as('add template'));
     I.click('Next');
     I.fillField('#template-name',name);
     I.click('Next');
@@ -26,20 +26,20 @@ module.exports = {
 
   iNavigateTo(name, text) {
     I.see(name);
-    I.click(locate('a').withAttr( { title: 'select \'' + name + '\''} ));
+    I.click(locate('a').withAttr( { title: 'select \'' + name + '\''} ).as('select \"' + name + '\"'));
     I.see(text);
   },
 
-  iEditTemplate(name, text) {
+  iEditTemplate(name) {
+    I.see(name);
+    I.click(locate('a').withAttr( { title: 'edit \'' + name + '\''} ).as('edit template ' + name));
+    I.waitForText("editor", 3);
   },
 
   iClickActionForTemplate(action, templateName) {
-    I.say('this should now click ' + action + ' for the item ' + templateName);
+    I.say('Clicking ' + action + ' for the item ' + templateName);
 
-    // TODO: switch this to a less fragile locator
-    I.click("//span/div/div[1]/div/div/div[1]/ul/li[contains(., '" + templateName + "')]" +
-        "//a[contains(.,'" + action + "')]");
-
+    I.click(locate('a').withText(action).inside(locate('li').withText(templateName)).as("\'" + action + "\' for template \'" + templateName + "\'"));
   },
 
   iNavigateHome() {

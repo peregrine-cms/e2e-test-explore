@@ -8,7 +8,7 @@ module.exports = {
   },
 
   iCreateANewSite(name) {
-    I.click(locate('a').withAttr( { title: 'add page'} ));
+    I.click(locate('a').withAttr( { title: 'add page'} ).as('create site'));
     I.click('Next');
     I.fillField('#site-name',name);
     I.click('Next');
@@ -26,21 +26,27 @@ module.exports = {
 
   iNavigateTo(name, text) {
     I.see(name);
-    I.click(locate('a').withAttr( { title: 'select \'' + name + '\''} ));
+    I.click(locate('a').withAttr( { title: 'select \'' + name + '\''} ).as(name + ' link'));
     I.see(text);
   },
 
   iEditPage(name, text) {
-    I.say("test 1");
     I.see(name);
-    I.click(locate('a').withAttr( { title: 'edit \'' + name + '\''} ));
-    I.say("test 2");
+    I.click(locate('a').withAttr( { title: 'edit \'' + name + '\''} ).as('edit ' + name));
     I.waitForText("editor", 3);
   },
 
+  iAddAPage(pageName, templateName) {
+    I.click(locate('a').withAttr( { title: 'add page'} ).as('add page'));
+    I.click(templateName);
+    I.click('Next');
+    I.fillField('#page-name',pageName);
+    I.click('Next');
+    I.click('Finish');
+  },
+
   iClickActionForItem(action, item) {
-    I.say('this should now click ' + action + ' for the item '+item);
-    pause();
+    // I.say('this should now click ' + action + ' for the item '+item);
   },
 
   reorderItems(srcAssetName, targetName) {

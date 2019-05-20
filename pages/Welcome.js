@@ -16,5 +16,4 @@ module.exports = {
     I.click(linkText);
     target.validatePage();
   }
-
 }

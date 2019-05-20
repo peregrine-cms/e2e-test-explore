@@ -1,8 +1,7 @@
 const I = actor();
+const config = require('codeceptjs').config;
 
 module.exports = {
-
-
     iAmOnThePage() {
         I.amOnPage('/content/admin.html');
 
@@ -10,18 +9,17 @@ module.exports = {
     },
 
     validatePage() {
-        I.wait(1);
         I.see('home');
     },
 
     navigateTo(linkText, target) {
         I.say("Navigating to " + linkText);
-        I.say("requires testSupport branch");
+        // NOTE! If your tests are breaking here it's because you're not on the testsupport branch
 
         I.click(
         locate('a').withAttr({title: 'explore'})
             //.inside(locate('div').withAttr({'class': 'card blue-grey darken-3'}).withText(linkText))
-            .inside(locate('div').withAttr({'data-test-container': 'cardAction'}).withText(linkText))
+            .inside(locate('div').withAttr({'data-test-container': 'cardAction'}).withText(linkText)).as('"' + linkText + '" link')
         );
 
         target.validatePage();

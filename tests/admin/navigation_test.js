@@ -12,8 +12,8 @@ After(pagesPage => {
 
 Scenario('Navigation page test', (I, recorder, welcomePage, assetsPage, homePage, objectsPage, templatesPage, pagesPage) => {
 
-    I.say('Proof-of-concept test: CodeceptJS vs PeregrineCMS');
-    I.showConsoleLog();
+    I.say('Testing navigating to admin pages');
+    //I.showConsoleLog();
 
     // I.startRecording();
     welcomePage.iAmOnThePage();

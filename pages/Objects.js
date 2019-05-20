@@ -10,9 +10,9 @@ module.exports = {
   },
 
   iCreateANewObject(name, type) {
-    I.click(locate('a').withAttr( { title: 'add object'} ));
+    I.click(locate('a').withAttr( { title: 'add object'} ).as("Add Object"));
     I.see("create an object");
-    I.click(locate('a').withAttr( { title: type} ));
+    I.click(locate('a').withAttr( { title: type} ).as("Select type " + type));
     I.click('Next');
     I.fillField('#object-name',name);
     I.click('Next');

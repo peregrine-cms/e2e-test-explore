@@ -34,7 +34,7 @@ AfterSuite(objectsPage => {
 
 Data(objects).Scenario('Create object types', (I, current, recorder, welcomePage, homePage, objectsPage) => {
 
-    I.say('Proof-of-concept test: CodeceptJS vs PeregrineCMS');
+    I.say('Add object test. Object of type: ' + current.objectType);
 
     // I.startRecording();
     welcomePage.iAmOnThePage();

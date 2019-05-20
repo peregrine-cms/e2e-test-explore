@@ -9,7 +9,8 @@ exports.siteIncludes = {
     objectsPage: './pages/Objects.js',
     templatesPage: './pages/Templates.js',
     recorder: './libs/recorder.js',
-    pageEditor: './Pages/PageEditor.js',
+    pageEditor: './pages/PageEditor.js',
+    templateEditor: './pages/TemplateEditor.js',
     common: './libs/common.js',
     I: './libs/steps_file.js'
 }

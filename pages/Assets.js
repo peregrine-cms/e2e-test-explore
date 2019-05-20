@@ -4,10 +4,7 @@ const Ii = require('../libs/common');
 module.exports = {
 
   validatePage() {
-
     I.seeInTitle('assets');
-
-    I.say("valid page");
   },
 
   iCreateANewAsset(name) {
@@ -16,7 +13,7 @@ module.exports = {
   iUploadAnAsset(path) {
     I.say("Uploading asset from path: " + path);
 
-    I.attachFile(locate('input').withAttr({type: "file"}), path);
+    I.attachFile(locate('input').withAttr({type: "file"}).as("Upload Asset"), path);
   },
 
   iDeleteAnAsset(name) {
@@ -31,8 +28,8 @@ module.exports = {
 
   iValidateAssetText(assetName, text) {
     I.see(assetName);
-    I.click(locate('a').withAttr( { title: 'select \'' + assetName + '\''} ));
-    
+    I.click(locate('a').withAttr( { title: 'select \'' + assetName + '\''} ).as("Select asset " + assetName));
+
     within({frame: "iframe"}, () => {
       I.see(text);
     });
