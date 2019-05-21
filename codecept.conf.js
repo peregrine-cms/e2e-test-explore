@@ -76,6 +76,6 @@ exports.config = {
     }
   },
   // This path matches all of out tests -- use test runner to constrain via tag
-  tests: '{./tests/**/*test.js,./tests/admin/**/*test*.js}',
+  tests: '{./tests/(!experiments)/*test.js,./tests/admin/**/*test*.js}',
   name: 'peregrine-test'
 }
