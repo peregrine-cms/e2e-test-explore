@@ -1,7 +1,6 @@
 
 const testSiteName = "template-test-1";
 const testSubTemplateName = "subtemplate-1";
-const headlessMode = require('codeceptjs').config.get("headlessMode");
 
 Feature('Template creation after site creation');
 
@@ -46,8 +45,7 @@ Scenario('template testing', (I, recorder, welcomePage, pagesPage, homePage, tem
 
     templatesPage.iEditTemplate(testSubTemplateName);
 
-    if(!headlessMode) {
-        templateEditor.iAddComponent('Teaser Horizontal');
-        templateEditor.iAddComponent('Article Quote');
-    }
+    templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Teaser Horizontal');
+    templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Article Quote');
+
 }).tag('@templates').tag('@templateTest1');

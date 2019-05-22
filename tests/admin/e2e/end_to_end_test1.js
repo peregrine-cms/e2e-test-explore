@@ -3,9 +3,6 @@ const testSiteName = "my-test-site";
 const testSiteSubPage = "test-sub-page";
 const testSubTemplateName = "subtemplate-1";
 const testTemplateComponentTitle = "Test Template";
-const headlessMode = require('codeceptjs').config.get("headlessMode");
-
-// const { headlessMode } = inject();
 
 Feature('End to End tests');
 
@@ -21,7 +18,7 @@ After(pagesPage => {
 
 Scenario('Full site use', (I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor, pageEditor) => {
 
-    I.say('Creating a new site name ' + testSiteName + " ... " + headlessMode);
+    I.say('Creating a new site name ' + testSiteName);
 
     //I.showConsoleLog();
 
@@ -54,20 +51,15 @@ Scenario('Full site use', (I, recorder, welcomePage, pagesPage, homePage, templa
 
     templatesPage.iCreateANewTemplate(testSubTemplateName);
 
-    I.wait(1);
     templatesPage.iEditTemplate(testSubTemplateName);
 
-    templateEditor.iAddComponent('Accordion');
-    templateEditor.iAddComponent('Carousel');
+    templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Accordion');
+    templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Carousel');
 
-    I.wait(1);
+    templateEditor.iClickComponent("Peregrine Accordion");
+    templateEditor.iEditActiveComponentTitle(testTemplateComponentTitle);
+    templateEditor.iClickActiveComponentAccept();
 
-    if(!headlessMode) {
-        templateEditor.iClickComponent("Peregrine Accordion");
-
-        templateEditor.iEditActiveComponentTitle(testTemplateComponentTitle);
-        templateEditor.iClickActiveComponentAccept();
-    }
 
     templateEditor.iReturnToTemplatesMenu();
 
@@ -81,9 +73,8 @@ Scenario('Full site use', (I, recorder, welcomePage, pagesPage, homePage, templa
 
     pagesPage.iEditPage(testSiteSubPage, "editor");
 
-    I.wait(2);
+    I.wait(0.5);
 
-    if(!headlessMode) {
-        pageEditor.iSeeTextInEditor(testTemplateComponentTitle);
-    }
+    pageEditor.iSeeTextInEditor(testTemplateComponentTitle);
+
 }).tag("@e2e").tag("@endToEndTest1");

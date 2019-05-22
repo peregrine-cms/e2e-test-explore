@@ -1,15 +1,14 @@
 const I = actor();
-const config = require('codeceptjs').config;
 const headlessMode = require('codeceptjs').config.get("headlessMode");
-//const { headlessMode } = inject();
+
+const header = ({"Content-Type": 'application/x-www-form-urlencoded'});
 
 module.exports = {
 
-    iAddComponent(componentType, targetLocator) {
+    iAddComponent(siteName, templateName, componentType, targetLocator) {
         I.say('Adding ' + componentType + ' to template');
 
         I.seeTitleEquals('editor');
-        I.wait(0.5);
 
         let sourceLocator = locate('li').withAttr({draggable: "true"}).withText(componentType).as(componentType + " component");
         I.seeElement(sourceLocator);
@@ -21,12 +20,21 @@ module.exports = {
         if(!targetLocator) {
             targetLocator = locate('div').withAttr({id: "editable"}).as("Page start")
         }
-        if(!config.get('headlessMode')) {
+
+        if(headlessMode) {
+            I.say("using REST API to add component");
+
+            const payload = "component=/apps/" + siteName + "/components/" + componentType.toLowerCase() + "&drop=into-before&variation=sample";
+
+            I.sendPostRequest("/perapi/admin/insertNodeAt.json/content/templates/" + siteName + "/" + templateName + "/jcr:content",
+                payload, header);
+
+            I.refreshPage();
+        } else {
             I.say("dragging and dropping " + sourceLocator);
             I.robotDragAndDropElements(sourceLocator, targetLocator);
+            I.wait(0.5);
         }
-
-        I.wait(0.5);
     },
 
     iReturnToTemplatesMenu() {
@@ -50,6 +58,13 @@ module.exports = {
 
         within({frame: "#editview"}, () => {
             I.click(locate('section').withText(componentText).as(componentText + " component"));
+        });
+    },
+
+    // Because of the iFrame, we can't just use I.see
+    iSeeTextInEditor(textToSee) {
+        within({frame: "#editview"}, () => {
+            I.see(textToSee);
         });
     }
 

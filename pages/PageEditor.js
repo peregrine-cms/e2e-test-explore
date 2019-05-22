@@ -1,13 +1,14 @@
 const I = actor();
-const config = require('codeceptjs').config;
+const headlessMode = require('codeceptjs').config.get("headlessMode");
+
+const header = ({"Content-Type": 'application/x-www-form-urlencoded'});
 
 module.exports = {
 
-    iAddComponent(componentType, targetLocator) {
+    iAddComponent(siteName, pageName, componentType, targetLocator) {
         I.say('Adding ' + componentType + ' to Page');
 
         I.seeTitleEquals('editor');
-        I.wait(0.5);
 
         let sourceLocator = locate('li').withAttr({draggable: "true"}).withText(componentType).as(componentType + " component");
         I.seeElement(sourceLocator);
@@ -20,12 +21,20 @@ module.exports = {
             targetLocator = locate('div').withAttr({id: "editable"}).as("Page start")
         }
 
-        if(!config.get('headlessMode')) {
-            I.say("dragging and dropping" + sourceLocator);
-            I.robotDragAndDropElements(sourceLocator, targetLocator);
-        }
+        if(headlessMode) {
+            I.say("using REST API to add component");
 
-        I.wait(0.5);
+            const payload = "component=/apps/" + siteName + "/components/" + componentType.toLowerCase() + "&drop=into-before&variation=sample";
+
+            I.sendPostRequest("/perapi/admin/insertNodeAt.json/content/sites/" + siteName + "/" + pageName + "/jcr:content",
+                payload, header);
+
+            I.refreshPage();
+        } else {
+            I.say("dragging and dropping " + sourceLocator);
+            I.robotDragAndDropElements(sourceLocator, targetLocator);
+            I.wait(0.5);
+        }
     },
 
     // Because of the iFrame, we can't just use I.see

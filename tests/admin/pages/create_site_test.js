@@ -1,9 +1,9 @@
 
 const testPageComponentTitle = "New title from editor"
-const headlessMode = require('codeceptjs').config.get("headlessMode");
 
 Feature('Create site');
 
+const dragTestSite = "test_X";
 let testSites = ['test1', 'test2'];
 let sites = new DataTable(['siteName']);
 testSites.forEach((site) => {
@@ -14,12 +14,14 @@ BeforeSuite(pagesPage => {
     testSites.forEach((site) => {
         pagesPage.iDeleteASite(site);
     });
+    pagesPage.iDeleteASite(dragTestSite);
 });
 
 AfterSuite(pagesPage => {
     testSites.forEach((site) => {
         pagesPage.iDeleteASite(site);
     });
+    pagesPage.iDeleteASite(dragTestSite);
 });
 
 Before((login, pagesPage) => {
@@ -40,14 +42,16 @@ Scenario('Reorder page elements -- mouse move proof of concept @pagetest1', (I, 
 
     welcomePage.navigateTo('sites and pages', pagesPage);
 
-    if(!headlessMode) {
-        pagesPage.reorderItems("greble","site-2");
-    }
+    testSites.forEach((site) => {
+        pagesPage.iCreateANewSite(site);
+    });
+    pagesPage.iCreateANewSite(dragTestSite);
+
+    pagesPage.reorderItems(dragTestSite,"test1");
 }).tag("@pages").tag("@explorerTest1");;
 
 
 Data(sites).Scenario('Page editor flow test', (I, current, recorder, welcomePage, pagesPage, pageEditor) => {
-
     I.say('Create Page test: ' + current.siteName);
 
     // I.startRecording();
@@ -57,24 +61,20 @@ Data(sites).Scenario('Page editor flow test', (I, current, recorder, welcomePage
 
     welcomePage.navigateTo('sites and pages', pagesPage);
 
-
     pagesPage.iCreateANewSite(current.siteName);
-
 
     pagesPage.iNavigateTo(current.siteName, 'Sample Sites');
 
     pagesPage.iEditPage('Sample Sites', "editor!");
 
-    pageEditor.iAddComponent('Accordion');
+    pageEditor.iAddComponent(current.siteName, 'Sample Sites', 'Accordion');
 
-    if(!headlessMode) {
-        pageEditor.iClickComponent("Peregrine Accordion");
+    pageEditor.iClickComponent("Peregrine Accordion");
 
-        pageEditor.iEditActiveComponentTitle(testPageComponentTitle);
-        pageEditor.iClickActiveComponentAccept();
+    pageEditor.iEditActiveComponentTitle(testPageComponentTitle);
+    pageEditor.iClickActiveComponentAccept();
 
-        pageEditor.iSeeTextInEditor(testPageComponentTitle);
-    }
+    pageEditor.iSeeTextInEditor(testPageComponentTitle);
 
 }).tag("@pages").tag("@pageTest1");
 

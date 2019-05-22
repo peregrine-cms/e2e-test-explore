@@ -1,5 +1,6 @@
 const I = actor();
 const Ii = require('../libs/common');
+const headlessMode = require('codeceptjs').config.get("headlessMode");
 
 module.exports = {
 
@@ -52,7 +53,9 @@ module.exports = {
   reorderItems(srcAssetName, targetName) {
     I.seeInTitle('pages');
 
-    I.robotDragAndDropElements(locate('span.draggable').inside(locate('li').withText(srcAssetName)), locate('li').withText(targetName))
+    if(!headlessMode) {
+      I.robotDragAndDropElements(locate('span.draggable').inside(locate('li').withText(srcAssetName)), locate('li').withText(targetName))
+    }
     I.wait(1);
 
     I.seeInTitle('pages');
