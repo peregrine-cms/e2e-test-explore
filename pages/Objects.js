@@ -1,6 +1,5 @@
 
-const { I } = inject();
-const Ii = require('../libs/common');
+const { I, homeButton, timePopups } = inject();
 const lorem = require('../libs/lorem');
 
 module.exports = {
@@ -24,9 +23,9 @@ module.exports = {
       I.fillField('#text-area', lorem.generateSentences(2));
       I.click('#checkbox');
 
-      Ii.clickDatePopup("11");
-      Ii.clickTimePopup('08','16');
-      Ii.clickDateTimePopup("1", "02", "03");
+      timePopups.clickDatePopup("11");
+      timePopups.clickTimePopup('08','16');
+      timePopups.clickDateTimePopup("1", "02", "03");
 
       // pause();
     } else if (type === "collection") {
@@ -55,6 +54,6 @@ module.exports = {
   },
 
   iNavigateHome() {
-    Ii.returnToHomeMenu();
+    homeButton.returnToHomeMenu();
   }
 }

@@ -11,6 +11,7 @@ exports.siteIncludes = {
     recorder: './libs/recorder.js',
     pageEditor: './pages/PageEditor.js',
     templateEditor: './pages/TemplateEditor.js',
-    common: './libs/common.js',
+    homeButton: './fragments/homeButton.js',
+    timePopups: './fragments/timePopups.js',
     I: './libs/steps_file.js'
 }

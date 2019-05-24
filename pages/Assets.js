@@ -1,5 +1,4 @@
-const { I } = inject();
-const Ii = require('../libs/common');
+const { I, homeButton } = inject();
 
 module.exports = {
 
@@ -36,7 +35,7 @@ module.exports = {
   },
 
   iNavigateHome() {
-    Ii.returnToHomeMenu();
+    homeButton.returnToHomeMenu();
   }
 
 }

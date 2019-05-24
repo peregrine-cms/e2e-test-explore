@@ -1,4 +1,3 @@
-
 const { I } = inject();
 
 module.exports = {
@@ -28,11 +27,5 @@ module.exports = {
         I.click(locate('div').withAttr({class: "vdatetime-time-picker__item"}).withText(minute)
             .inside(locate('div').withAttr({class: "vdatetime-time-picker__list vdatetime-time-picker__list--minutes"})).as("select minute " + minute));
         I.click(locate('div').withAttr({class: "vdatetime-popup__actions__button vdatetime-popup__actions__button--confirm"}).as("Confirm"));
-    },
-
-    returnToHomeMenu() {
-        I.say("Returning to main menu");
-
-        I.click(locate('a').withAttr( { title: 'home'} ).as('home'));
     }
 }
