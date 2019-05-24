@@ -1,5 +1,5 @@
 
-const I = actor();
+const { I } = inject();
 const Ii = require('../libs/common');
 const lorem = require('../libs/lorem');
 

@@ -1,6 +1,6 @@
 {
   "name": "peregrine-test",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "a codeceptjs based test framework for peregrine-cms",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "headwire.com, Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "codeceptjs": "^2.1.0",
+    "codeceptjs": "^2.1.3",
     "codeceptjs-cmdhelper": "^2.2.0",
     "ffmpeg-static": "^2.4.0",
     "lorem-ipsum": "^2.0.2",

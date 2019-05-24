@@ -1,4 +1,4 @@
-const I = actor();
+const { I } = inject();
 const headlessMode = require('codeceptjs').config.get("headlessMode");
 
 const header = ({"Content-Type": 'application/x-www-form-urlencoded'});

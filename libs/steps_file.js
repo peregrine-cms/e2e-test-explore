@@ -1,8 +1,10 @@
+
+const { I } = inject();
+
 const process = require('process');
 const ffmpeg = require('ffmpeg-static');
 
 const { spawn } = require('child_process');
-const I = actor();
 
 let recorder = undefined;
 

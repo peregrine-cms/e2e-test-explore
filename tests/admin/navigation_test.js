@@ -1,6 +1,8 @@
 
 Feature('Navigation');
 
+const { I, recorder, welcomePage, assetsPage, homePage, objectsPage, templatesPage, pagesPage } = inject();
+
 Before((login, pagesPage) => {
     login('admin');
 });
@@ -10,7 +12,7 @@ After(pagesPage => {
 });
 
 
-Scenario('Navigation page test', (I, recorder, welcomePage, assetsPage, homePage, objectsPage, templatesPage, pagesPage) => {
+Scenario('Navigation page test', () => {
 
     I.say('Testing navigating to admin pages');
     //I.showConsoleLog();

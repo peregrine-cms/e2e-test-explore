@@ -1,8 +1,10 @@
 
+Feature('Template creation after site creation');
+
+const { I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor } = inject();
+
 const testSiteName = "template-test-1";
 const testSubTemplateName = "subtemplate-1";
-
-Feature('Template creation after site creation');
 
 Before((login, pagesPage) => {
     login('admin');
@@ -14,7 +16,7 @@ After(pagesPage => {
 });
 
 
-Scenario('template testing', (I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor) => {
+Scenario('template testing', () => {
 
     I.say('Template test');
 

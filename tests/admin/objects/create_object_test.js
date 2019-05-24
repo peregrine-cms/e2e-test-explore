@@ -1,4 +1,6 @@
 
+const { I, recorder, welcomePage, homePage, objectsPage } = inject();
+
 Feature('Create Objects');
 
 let testObjects = [
@@ -32,7 +34,7 @@ AfterSuite(objectsPage => {
     });
 });
 
-Data(objects).Scenario('Create object types', (I, current, recorder, welcomePage, homePage, objectsPage) => {
+Data(objects).Scenario('Create object types', (current) => {
 
     I.say('Add object test. Object of type: ' + current.objectType);
 
@@ -49,8 +51,3 @@ Data(objects).Scenario('Create object types', (I, current, recorder, welcomePage
 
 }).tag("@objects").tag("@objectTest1");
 
-
-Scenario('t2', (I) => {
-    I.say("here");
-
-}).tag("@objects").tag("@objectTest2");

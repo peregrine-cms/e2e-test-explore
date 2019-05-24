@@ -1,5 +1,4 @@
-const I = actor();
-const config = require('codeceptjs').config;
+const { I } = inject();
 
 module.exports = {
     iAmOnThePage() {

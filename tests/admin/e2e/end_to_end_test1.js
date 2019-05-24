@@ -1,10 +1,12 @@
 
+Feature('End to End tests');
+
+const { I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor, pageEditor } = inject();
+
 const testSiteName = "my-test-site";
 const testSiteSubPage = "test-sub-page";
 const testSubTemplateName = "subtemplate-1";
 const testTemplateComponentTitle = "Test Template";
-
-Feature('End to End tests');
 
 Before((login, pagesPage) => {
     login('admin');
@@ -16,7 +18,7 @@ After(pagesPage => {
 });
 
 
-Scenario('Full site use', (I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor, pageEditor) => {
+Scenario('Full site use', () => {
 
     I.say('Creating a new site name ' + testSiteName);
 

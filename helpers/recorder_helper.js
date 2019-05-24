@@ -1,6 +1,4 @@
 
-const robot = require('robotjs');
-
 class RecorderHelper extends Helper {
 
   // before/after hooks

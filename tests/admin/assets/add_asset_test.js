@@ -1,8 +1,9 @@
 
 Feature('Create Assets');
 
-let uploadAssets = new DataTable(['filename', 'verifyText']);
+const { I, recorder, welcomePage, homePage, assetsPage } = inject();
 
+let uploadAssets = new DataTable(['filename', 'verifyText']);
 let testUploadAssets = [
     ['test.txt', '1234'],
     ['test2.txt', 'Hello, world!'],
@@ -30,7 +31,7 @@ Before((login, assetsPage) => {
 });
 
 
-Data(uploadAssets).Scenario('Upload assets', (I, current, recorder, welcomePage, homePage, assetsPage) => {
+Data(uploadAssets).Scenario('Upload assets', (current) => {
 
     I.say('Testing upload of asset: ' + current.filename);
 
