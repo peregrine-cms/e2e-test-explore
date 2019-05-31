@@ -11,9 +11,14 @@ args.version('1.0.0')
     .option('-s, --showbrowser', 'run tests with browser', false)
     .option('-i, --interactiveshell', 'run codeceptjs in shell mode', false)
     .option('-l, --loglevel [loglevel]', 'specify output level: none, steps, debug, or verbose (default: steps)')
+    .option('-d, --dockerinstance', 'run tests against default docker container', false)
     .parse(process.argv);
 
 let overrides = {};
+
+function showMessage(message) {
+    console.log("--" + message);
+}
 
 if(args.showbrowser) {
     Object.assign(overrides, { "helpers": {"Puppeteer": {"show": "true"}}});
@@ -75,9 +80,22 @@ if(runMode == "shell") {
 } else {
     spawnArgs = ['codeceptjs', runMode, '-o', JSON.stringify(overrides)].concat(additionalArgs);
 }
-console.log("Spawning: npx " + spawnArgs.join(" "));
 
+let dockerContainerId = "peregrine-cms-" + Math.floor(Math.random() * 10000);
+if(args.dockerinstance) {
+    showMessage("Starting docker container " + dockerContainerId);
+    output = spawnSync('scripts/startDocker.sh', [dockerContainerId]);
+    showMessage("Docker instance " + dockerContainerId + " started");
+}
+
+showMessage("Spawning: npx " + spawnArgs.join(" "));
 spawnSync('npx', spawnArgs, {
     stdio: [process.stdin, process.stdout, process.stderr]
 });
+
+if(args.dockerinstance) {
+    showMessage("Stopping docker instance " + dockerContainerId);
+    var results = spawnSync('docker', ['stop', dockerContainerId]);
+    showMessage("Container stopped");
+}
 

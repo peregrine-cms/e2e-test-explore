@@ -17,8 +17,8 @@ module.exports = {
 
         I.click(
         locate('a').withAttr({title: 'explore'})
-            //.inside(locate('div').withAttr({'class': 'card blue-grey darken-3'}).withText(linkText))
-            .inside(locate('div').withAttr({'data-test-container': 'cardAction'}).withText(linkText)).as('"' + linkText + '" link')
+            .inside(locate('div').withAttr({'class': 'card blue-grey darken-3'}).withText(linkText)).as('"' + linkText + '" link')
+            //.inside(locate('div').withAttr({'data-test-container': 'cardAction'}).withText(linkText)).as('"' + linkText + '" link')
         );
 
         target.validatePage();
