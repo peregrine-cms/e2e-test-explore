@@ -11,7 +11,7 @@ args.version('1.0.0')
     .option('-s, --showbrowser', 'run tests with browser', false)
     .option('-i, --interactiveshell', 'run codeceptjs in shell mode', false)
     .option('-l, --loglevel [loglevel]', 'specify output level: none, steps, debug, or verbose (default: steps)')
-    .option('-d, --dockerinstance', 'run tests against default docker container', false)
+    .option('-d, --dockerinstance [tag]', 'run tests against peregrine docker container. (default: develop)')
     .parse(process.argv);
 
 let overrides = {};
@@ -81,10 +81,20 @@ if(runMode == "shell") {
     spawnArgs = ['codeceptjs', runMode, '-o', JSON.stringify(overrides)].concat(additionalArgs);
 }
 
-let dockerContainerId = "peregrine-cms-" + Math.floor(Math.random() * 10000);
+let dockerContainerId = "peregrine-cms-" + Math.floor(Math.random() * 1000000);
+
 if(args.dockerinstance) {
     showMessage("Starting docker container " + dockerContainerId);
-    output = spawnSync('scripts/startDocker.sh', [dockerContainerId]);
+    let dockerStartArgs = [dockerContainerId];
+    if(typeof args.dockerinstance == "string") {
+        dockerStartArgs.push(args.dockerinstance);
+    }
+    output = spawnSync('scripts/startDocker.sh', dockerStartArgs);
+
+    if(output && output.status != 0) {
+        showMessage("Docker unable to start. " + output.stderr.toString());
+        return 1;
+    }
     showMessage("Docker instance " + dockerContainerId + " started");
 }
 
