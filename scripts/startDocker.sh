@@ -10,8 +10,9 @@ fi
 # ignore the --name option and just pick one
 
 TAG=${2:-develop}
+CONTAINER_NAME=${2:-peregrine_cms_container}
 
-docker run -d --rm -p 8080:8080 --name=$1 reusr1/peregrine-cms:$TAG
+docker run -d --rm -p 8080:8080 --name=$CONTAINER_NAME peregrinecms/peregrine-cms:$TAG
 
 # make sure it didn't fail for whatever reason
 if ! [ $? -eq 0 ]; then
@@ -19,7 +20,10 @@ if ! [ $? -eq 0 ]; then
     exit 1
 fi
 
-# here's where we'll spam "docker inspect" to wait for the health check to return true
-# until that's ready, we'll just sleep for 15 seconds :O
-sleep 15
+# Call docker inspect every second until status comes back as "healthy"
+until docker inspect -f {{.State.Health.Status}} $CONTAINER_NAME | grep -q "healthy";
+do
+    sleep 1;
+done
+
 
