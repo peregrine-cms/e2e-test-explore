@@ -6,11 +6,9 @@ if ! [ -x "$(command -v docker)" ]; then
   exit 1
 fi
 
-# Start docker with the first argument as the container name; if none is specified docker will
-# ignore the --name option and just pick one
-
+# Start docker with the first argument as the container name
+CONTAINER_NAME=${1:-peregrine_cms_container}
 TAG=${2:-develop}
-CONTAINER_NAME=${2:-peregrine_cms_container}
 
 docker run -d --rm -p 8080:8080 --name=$CONTAINER_NAME peregrinecms/peregrine-cms:$TAG
 
