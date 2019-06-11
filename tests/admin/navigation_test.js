@@ -17,7 +17,7 @@ Scenario('Navigation page test', () => {
     I.say('Testing navigating to admin pages');
     //I.showConsoleLog();
 
-    // I.startRecording();
+    //I.startRecording();
     welcomePage.iAmOnThePage();
 
     // pause();
@@ -48,5 +48,7 @@ Scenario('Navigation page test', () => {
     pagesPage.iNavigateHome();
 
     homePage.iAmOnThePage();
+
+    //I.stopRecording();
 
 }).tag("navigation");

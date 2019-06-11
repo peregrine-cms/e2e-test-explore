@@ -16,5 +16,8 @@
     "nightmare": "^3.0.1",
     "puppeteer": "^1.14.0",
     "robotjs": "^0.5.1"
+  },
+  "devDependencies": {
+    "allure-commandline": "^2.9.0"
   }
 }

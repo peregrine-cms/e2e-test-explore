@@ -11,6 +11,7 @@ args.version('1.0.0')
     .option('-s, --showbrowser', 'run tests with browser', false)
     .option('-i, --interactiveshell', 'run codeceptjs in shell mode', false)
     .option('-l, --loglevel [loglevel]', 'specify output level: none, steps, debug, or verbose (default: steps)')
+    .option('-r, --reporting', 'include allure reporting output', false)
     .option('-d, --dockerinstance [tag]', 'run tests against peregrine docker container. (default: develop)')
     .parse(process.argv);
 
@@ -71,6 +72,10 @@ if((args.loglevel) && (['steps', 'debug', 'verbose'].indexOf(args.loglevel) > 0)
     additionalArgs.push("--" + args.loglevel);
 } else if(args.loglevel != "none") {
     additionalArgs.push("--steps");
+}
+
+if(args.reporting) {
+    additionalArgs.push("--plugins","allure");
 }
 
 // Some parameters get set in the config override, while others are command-line
