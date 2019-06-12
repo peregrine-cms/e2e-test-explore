@@ -90,23 +90,47 @@ let dockerContainerId = "peregrine-cms-" + Math.floor(Math.random() * 1000000);
 
 if(args.dockerinstance) {
     showMessage("Starting docker container " + dockerContainerId);
-    let dockerStartArgs = [dockerContainerId];
-    if(typeof args.dockerinstance == "string") {
-        dockerStartArgs.push(args.dockerinstance);
-    }
-    output = spawnSync('scripts/startDocker.sh', dockerStartArgs);
 
-    if(output && output.status != 0) {
-        showMessage("Docker unable to start. " + output.stderr.toString());
+    let dockerStartArgs = ['run', '-d', '--rm', '-p', '8000:8000', '--name=' + dockerContainerId,
+        'peregrinecms/peregrine-cms:' + ((typeof args.dockerinstance == "string") ? args.dockerinstance : "develop")];
+
+    showMessage("Spawning: docker " + dockerStartArgs.join(" "));
+    let results = spawnSync('docker', dockerStartArgs);
+
+    if(results && results.status != 0) {
+        showMessage("Docker unable to start. " + results.stderr.toString());
         return 1;
     }
-    showMessage("Docker instance " + dockerContainerId + " started");
+
+    showMessage("Docker process started, awaiting health check...");
+
+    // now we need to wait for it to startup
+    let ready = false;
+    let now = new Date().getTime();
+    while(!ready) {
+        let status = spawnSync('docker',
+            ['inspect', '-f', '{{.State.Health.Status}}', dockerContainerId]);
+
+        if(status.stdout.toString().indexOf("healthy")  >= 0) {
+            ready = true;
+        }
+
+        // this is a new process every time it runs, so waiting a second between steps
+        // from stackoverflow, don't use this method of sleeping in anything but a console script
+        var waitTill = new Date(new Date().getTime() + 1000);
+        while(waitTill > new Date()){}
+    }
+
+    showMessage("Docker instance " + dockerContainerId + " started after " + (new Date().getTime() - now) + " milliseconds");
 }
 
+
 showMessage("Spawning: npx " + spawnArgs.join(" "));
+
 spawnSync('npx', spawnArgs, {
     stdio: [process.stdin, process.stdout, process.stderr]
 });
+
 
 if(args.dockerinstance) {
     showMessage("Stopping docker instance " + dockerContainerId);
