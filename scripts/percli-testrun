@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
+const process = require('process');
 const args = require('commander');
 const Codeceptjs = require( 'codeceptjs' ).codecept;
-const { spawn, spawnSync } = require('child_process');
+const { spawn, spawnSync, execSync } = require('child_process');
 
 args.version('1.0.0')
     .option("-p, --pattern [pattern]", 'run tests that match pattern')
@@ -17,6 +18,7 @@ args.version('1.0.0')
     .parse(process.argv);
 
 let overrides = {};
+let isWin = process.platform === "win32";
 
 function showMessage(message) {
     console.log("--" + message);
@@ -84,7 +86,13 @@ let spawnArgs;
 if(runMode == "shell") {
     spawnArgs = ['codeceptjs', runMode];
 } else {
-    spawnArgs = ['codeceptjs', runMode, '-o', JSON.stringify(overrides)].concat(additionalArgs);
+	let jsonString = JSON.stringify(overrides);
+	if(isWin) {
+	    //The json needs to be surrounded with quotes and have its internal quotes escaped on windows
+	    jsonString = '"' + jsonString.replace(/"/g, '\\"') + '"';
+	}
+
+    spawnArgs = ['codeceptjs', runMode, '-o', jsonString].concat(additionalArgs);
 }
 
 let dockerContainerId = "peregrine-cms-" + Math.floor(Math.random() * 1000000);
@@ -127,9 +135,18 @@ if(args.dockerinstance) {
 
 showMessage("Spawning: npx " + spawnArgs.join(" "));
 
-spawnSync('npx', spawnArgs, {
-    stdio: [process.stdin, process.stdout, process.stderr]
-});
+
+if(isWin) {
+    //spawnSync fails silently in the windows command prompt,
+    //but execSync works if the arguments are escaped and added to the command
+	execSync('npx ' + spawnArgs.join(" "), {
+		stdio: [process.stdin, process.stdout, process.stderr]
+	});
+} else {
+    spawnSync('npx', spawnArgs, {
+        stdio: [process.stdin, process.stdout, process.stderr]
+    });
+}
 
 
 if(args.dockerinstance) {
