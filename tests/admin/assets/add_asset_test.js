@@ -50,5 +50,11 @@ Data(uploadAssets).Scenario('Upload assets', (current) => {
 
     assetsPage.iValidateAssetText(current.filename, current.verifyText);
 
+    assetsPage.iSetAnAssetTitle(current.filename, current.filename + " Test Title");
+
+    I.see(current.filename + " Test Title");
+
+    assetsPage.iMoveAnAsset(current.filename + " Test Title", "example/images/Test");
+
 
 }).tag("@assets").tag("@assetTest1");
