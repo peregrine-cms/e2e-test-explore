@@ -50,34 +50,4 @@ Data(uploadAssets).Scenario('Upload assets', (current) => {
 
     assetsPage.iValidateAssetText(current.filename, current.verifyText);
 
-    assetsPage.iSetAnAssetTitle(current.filename, current.filename + " Test Title");
-
-    I.see(current.filename + " Test Title");
-
-    assetsPage.iMoveAnAsset(current.filename + " Test Title", "example/images/Test");
-
-
 }).tag("@assets").tag("@assetTest1");
-
-Scenario('Edit assets', () => {
-    I.say('Testing editing of asset: ' + 'test.txt');
-
-    // I.startRecording();
-    welcomePage.iAmOnThePage();
-    
-    welcomePage.navigateTo('administration', homePage);
-    
-    homePage.navigateTo('Assets', assetsPage);
-    
-    assetsPage.iUploadAnAsset("resources/" + 'test.txt');
-    
-    I.wait(1);
-    
-    I.see('test.txt');
-    
-    assetsPage.iSetAnAssetTitle('test.txt', 'test.txt' + " Test Title");
-    
-    I.see('test.txt' + " Test Title");
-    
-    assetsPage.iMoveAnAsset('test.txt' + " Test Title", "example/images/Test");
-}).tag("@assets").tag("@editAssetTest");

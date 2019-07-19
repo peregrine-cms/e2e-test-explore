@@ -26,6 +26,11 @@ module.exports = {
     I.sendDeleteRequest('/content/assets/'+name);
   },
 
+  iDeleteAnAssetThroughUi(name) {
+    I.click(locate('a').withAttr( { title: "delete '" + name + "'"}).as("Delete Asset: " + name));
+    I.acceptPopup();
+  },
+
   iNavigateTo(name, text) {
     I.see(name);
     I.click(locate('a').withAttr( { title: 'select \'' + name + '\''} ));
@@ -45,15 +50,20 @@ module.exports = {
     homeButton.returnToHomeMenu();
   },
 
-  iSetAnAssetTitle(assetName, title) {
+  iNavigateUpALevel() {
+    I.click(locate('a').withAttr( { title: 'select parent'} ).as("Select parent"));
+  },
+
+  iEditAnAssetTextProperty(assetName, propertyId, value) {
     I.see(assetName);
     I.click(locate('a').withAttr( { title: 'select \'' + assetName + '\''} ).as("Select asset " + assetName));
     I.click(locate('a').withAttr( { title: 'edit'} ).as("Edit asset " + assetName));
-    I.fillField('#title', title);
+    I.fillField(propertyId, value);
     I.click(locate('button').withAttr( { title: 'save page properties'} ).as("Save Properties"));
   },
 
   iMoveAnAsset(assetName, pathToNewLocation) {
+    let selectPrefix = "select-/content/assets/";
     I.see(assetName);
     I.click(locate('a').withAttr( { title: 'select \'' + assetName + '\''} ).as("Select asset " + assetName));
     I.click(locate('a').withAttr( { title: 'move asset'} ).as("Move asset " + assetName));
@@ -64,12 +74,9 @@ module.exports = {
           I.click(locate('span').withText(pathParts[i]).as("Label for " + pathParts[i]));
         }
         else {
-          I.click(locate('input')
-              .withAttr({ name: 'selectedItem'})
-              .inside('li')
-              .withChild('span')
-              .withText(pathParts[i]).as("Selection radio for " + pathParts[i]));
-          I.click("Select");
+          //I.click(locate({id:selectPrefix+pathToNewLocation}).as("Selection radio for " + pathParts[i]));
+          I.click(locate('label').withAttr({"data-per-name": pathParts[i]}).as("Selection radio for " + pathParts[i]));
+          I.click("select");
         }
       }
     });
