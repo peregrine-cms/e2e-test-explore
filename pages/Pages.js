@@ -8,7 +8,7 @@ module.exports = {
   },
 
   iCreateANewSite(name) {
-    I.click(locate('a').withAttr( { title: 'add page'} ).as('create site'));
+    I.click(locate('a').withAttr( { title: 'add site'} ).as('create site'));
     I.click('Next');
     I.fillField('#site-name',name);
     I.click('Next');
