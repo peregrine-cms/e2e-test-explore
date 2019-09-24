@@ -3,8 +3,11 @@ Feature('Template creation after site creation');
 
 const { I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor } = inject();
 
-const testSiteName = "template-test-1";
+const testSiteTitle = "Template Test 1";
+const testSiteName = "template_test_1";
+const testSubTemplateTitle = "Subtemplate 1";
 const testSubTemplateName = "subtemplate-1";
+const basePage = "base page";
 
 Before((login, pagesPage) => {
     login('admin');
@@ -13,6 +16,7 @@ Before((login, pagesPage) => {
 
 After(pagesPage => {
     pagesPage.iDeleteASite(testSiteName);
+    pagesPage.iDeleteAPackageGroup(testSiteName);
 });
 
 
@@ -27,7 +31,7 @@ Scenario('template testing', () => {
 
     homePage.navigateTo("Sites", pagesPage);
 
-    pagesPage.iCreateANewSite(testSiteName);
+    pagesPage.iCreateANewSite(testSiteTitle, testSiteName);
 
     pagesPage.iNavigateHome();
 
@@ -35,17 +39,17 @@ Scenario('template testing', () => {
 
     homePage.navigateTo("Templates", templatesPage);
 
-    templatesPage.iSeeTemplate(testSiteName);
+    templatesPage.iSeeTemplate(testSiteTitle);
 
     I.say("Clicking on info button");
-    templatesPage.iClickActionForTemplate("info", testSiteName);
+    templatesPage.iClickActionForTemplate("info", testSiteTitle);
     I.see("Created By");
 
-    templatesPage.iNavigateTo(testSiteName, testSiteName);
+    templatesPage.iNavigateTo(testSiteTitle, basePage);
 
-    templatesPage.iCreateANewTemplate(testSubTemplateName);
+    templatesPage.iCreateANewTemplate(testSubTemplateTitle, testSubTemplateName);
 
-    templatesPage.iEditTemplate(testSubTemplateName);
+    templatesPage.iEditTemplate(testSubTemplateTitle);
 
     templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Teaser Horizontal');
     templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Article Quote');

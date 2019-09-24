@@ -7,11 +7,15 @@ module.exports = {
     I.seeInTitle('pages');
   },
 
-  iCreateANewSite(name) {
+  iCreateANewSite(title, name) {
     I.click(locate('a').withAttr( { title: 'add site'} ).as('create site'));
     I.click('Next');
-    I.fillField('#site-name',name);
+    I.fillField('#site-title',title);
+    if(name !== undefined) {
+      I.fillField('#site-name',name);
+    }
     I.click('Next');
+    I.wait(1);
     I.click('Finish');
   },
 
@@ -22,6 +26,10 @@ module.exports = {
     I.sendDeleteRequest('/content/objects/'+name);
     I.sendDeleteRequest('/content/templates/'+name);
     I.sendDeleteRequest('/etc/felibs/'+name);
+  },
+
+  iDeleteAPackageGroup(name) {
+    I.sendDeleteRequest('/etc/packages/'+name);
   },
 
   iNavigateTo(name, text) {
@@ -36,11 +44,14 @@ module.exports = {
     I.waitForText("editor", 3);
   },
 
-  iAddAPage(pageName, templateName) {
+  iAddAPage(pageTitle, pageName, templateName) {
     I.click(locate('a').withAttr( { title: 'add page'} ).as('add page'));
     I.click(templateName);
     I.click('Next');
-    I.fillField('#page-name',pageName);
+    I.fillField('#page-title',pageTitle);
+    if(pageName !== undefined) {
+      I.fillField('#page-name',pageName);
+    }
     I.click('Next');
     I.click('Finish');
   },

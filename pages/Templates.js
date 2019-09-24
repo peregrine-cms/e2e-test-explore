@@ -7,10 +7,13 @@ module.exports = {
   },
 
   // Does not work top-level!
-  iCreateANewTemplate(name) {
+  iCreateANewTemplate(title, name) {
     I.click(locate('a').withAttr( { title: 'add template'} ).as('add template'));
     I.click('Next');
-    I.fillField('#template-name',name);
+    I.fillField('#template-title',title);
+    if(name !== undefined) {
+      I.fillField('#template-name',name);
+    }
     I.click('Next');
     I.click('Finish');
   },

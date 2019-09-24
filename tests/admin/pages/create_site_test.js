@@ -4,7 +4,8 @@ Feature('Create site');
 const { I, recorder, welcomePage, pagesPage, pageEditor } = inject();
 const testPageComponentTitle = "New title from editor";
 
-const dragTestSite = "test_X";
+const dragTestSiteTitle = "Drag Site";
+const dragTestSite = "test_x";
 let testSites = ['test1', 'test2'];
 let sites = new DataTable(['siteName']);
 testSites.forEach((site) => {
@@ -21,8 +22,10 @@ BeforeSuite(pagesPage => {
 AfterSuite(pagesPage => {
     testSites.forEach((site) => {
         pagesPage.iDeleteASite(site);
+        pagesPage.iDeleteAPackageGroup(site);
     });
     pagesPage.iDeleteASite(dragTestSite);
+    pagesPage.iDeleteAPackageGroup(dragTestSite);
 });
 
 Before((login, pagesPage) => {
@@ -32,6 +35,7 @@ Before((login, pagesPage) => {
 After(pagesPage => {
     testSites.forEach((site) => {
         pagesPage.iDeleteASite(site);
+        pagesPage.iDeleteAPackageGroup(site);
     });
 });
 
@@ -49,9 +53,9 @@ Scenario('Reorder page elements -- mouse move proof of concept @pagetest1', () =
     testSites.forEach((site) => {
         pagesPage.iCreateANewSite(site);
     });
-    pagesPage.iCreateANewSite(dragTestSite);
+    pagesPage.iCreateANewSite(dragTestSiteTitle, dragTestSite);
 
-    pagesPage.reorderItems(dragTestSite,testSites[0]);
+    pagesPage.reorderItems(dragTestSiteTitle,testSites[0]);
 }).tag("@pages").tag("@explorerTest1");
 
 

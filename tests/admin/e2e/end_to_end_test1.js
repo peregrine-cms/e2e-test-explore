@@ -3,10 +3,14 @@ Feature('End to End tests');
 
 const { I, recorder, welcomePage, pagesPage, homePage, templatesPage, templateEditor, pageEditor } = inject();
 
-const testSiteName = "my-test-site";
+const testSiteTitle = "My Test Site";
+const testSiteName = "my_test_site";
+const testSiteSubPageTitle = "Test Sub Page";
 const testSiteSubPage = "test-sub-page";
+const testSubTemplateTitle = "Subtemplate 1";
 const testSubTemplateName = "subtemplate-1";
 const testTemplateComponentTitle = "Test Template";
+const basePage = "base page";
 
 Before((login, pagesPage) => {
     login('admin');
@@ -15,6 +19,7 @@ Before((login, pagesPage) => {
 
 After(pagesPage => {
     pagesPage.iDeleteASite(testSiteName);
+    pagesPage.iDeleteAPackageGroup(testSiteName);
 });
 
 
@@ -33,9 +38,9 @@ Scenario('Full site use', () => {
 
     homePage.navigateTo("Sites", pagesPage);
 
-    pagesPage.iCreateANewSite(testSiteName);
+    pagesPage.iCreateANewSite(testSiteTitle, testSiteName);
 
-    pagesPage.iNavigateTo(testSiteName, 'Sample Sites');
+    pagesPage.iNavigateTo(testSiteTitle, 'Sample Sites');
 
     I.wait(1);
 
@@ -43,17 +48,17 @@ Scenario('Full site use', () => {
 
     homePage.navigateTo("Templates", templatesPage);
 
-    templatesPage.iSeeTemplate(testSiteName);
+    templatesPage.iSeeTemplate(testSiteTitle);
 
     I.say("Clicking on info button");
-    templatesPage.iClickActionForTemplate("info", testSiteName);
+    templatesPage.iClickActionForTemplate("info", testSiteTitle);
     I.see("Created By");
 
-    templatesPage.iNavigateTo(testSiteName, testSiteName);
+    templatesPage.iNavigateTo(testSiteTitle, basePage);
 
-    templatesPage.iCreateANewTemplate(testSubTemplateName);
+    templatesPage.iCreateANewTemplate(testSubTemplateTitle, testSubTemplateName);
 
-    templatesPage.iEditTemplate(testSubTemplateName);
+    templatesPage.iEditTemplate(testSubTemplateTitle);
 
     templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Accordion');
     templateEditor.iAddComponent(testSiteName, testSubTemplateName, 'Carousel');
@@ -71,9 +76,9 @@ Scenario('Full site use', () => {
 
     //pagesPage.iNavigateTo(testSiteName, 'Sample Sites');
 
-    pagesPage.iAddAPage(testSiteSubPage, testSubTemplateName);
+    pagesPage.iAddAPage(testSiteSubPageTitle, testSiteSubPage, testSubTemplateName);
 
-    pagesPage.iEditPage(testSiteSubPage, "editor");
+    pagesPage.iEditPage(testSiteSubPageTitle, "editor");
 
     I.wait(0.5);
 
